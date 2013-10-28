@@ -1,0 +1,9 @@
+{
+  "name": "khz",
+  "version": "0.0.0",
+  "dependencies": {
+    "ember": "~1.1.1",
+    "normalize-css": "~2.1.3",
+    "font-awesome": "~4.0.0"
+  }
+}

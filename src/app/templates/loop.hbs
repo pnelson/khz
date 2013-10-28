@@ -1,0 +1,41 @@
+<ul>
+  {{#each beats}}
+    <li>
+      <div class="beat">
+        {{#each this itemController="note"}}
+          <button {{action 'click' on='click'}}>
+            <i {{bind-attr class='icon'}}></i>
+          </button>
+        {{/each}}
+      </div>
+    </li>
+  {{/each}}
+</ul>
+
+<div class="controls">
+
+  <button {{action 'toggle'}}>
+    {{#if isPlaying}}
+      <i class="fa fa-fw fa-3x fa-pause"></i>
+    {{else}}
+      <i class="fa fa-fw fa-3x fa-play"></i>
+    {{/if}}
+  </button>
+
+  <div>
+
+    <div>
+      {{tempo}} bpm
+    </div>
+
+    <button {{action 'tempoDown'}}>
+      <i class="fa fa-3x fa-chevron-down"></i>
+    </button>
+
+    <button {{action 'tempoUp'}}>
+      <i class="fa fa-3x fa-chevron-up"></i>
+    </button>
+
+  </div>
+
+</div>
