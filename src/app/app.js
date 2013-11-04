@@ -159,7 +159,7 @@ App.NoteController = Ember.ObjectController.extend({
 
 App.Note = Ember.Object.extend({
 
-  intensity: '0',
+  intensity: 0,
 
   icon: function() {
     if (this.get('intensity') === 0)
