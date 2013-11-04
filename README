@@ -8,3 +8,9 @@ Grunt toolchain.
 This is my first Ember application and I don't do much client-side development.
 If anybody happens to stumble across this, please point out all my mistakes
 either by pull request or email.
+
+
+Drum Samples
+------------
+
+Drum samples in `src/static/kits` are from http://sampleswap.org.

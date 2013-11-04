@@ -65,21 +65,21 @@ App.LoopRoute = Ember.Route.extend({
 App.LoopController = Ember.ObjectController.extend({
 
   context: null,
+  buffers: [],
+
+  isReady: false,
   isPlaying: false,
 
   init: function() {
     this._super();
     this.context = new (window.AudioContext || window.webkitAudioContext)();
-    //var loader = new BufferLoader(this.context, [paths to wav], callback);
-    // in callback, set this.isReady to true (hide UI unless isReady)
-    //loader.load();
+    this.loadKit('00');
   },
 
   actions: {
 
     toggle: function() {
       this.toggleProperty('isPlaying');
-      console.log(this.context);
     },
 
     tempoDown: function() {
@@ -93,6 +93,47 @@ App.LoopController = Ember.ObjectController.extend({
       this.set('tempo', Math.min(200, tempo + 5));
       this.updateLoopId();
     }
+
+  },
+
+  loadKit: function(kitId) {
+
+    var urls = [
+      '/static/sounds/' + kitId + '/kick.wav',
+      '/static/sounds/' + kitId + '/snare.wav',
+      '/static/sounds/' + kitId + '/hihat.wav',
+      '/static/sounds/' + kitId + '/tom1.wav',
+      '/static/sounds/' + kitId + '/tom2.wav',
+      '/static/sounds/' + kitId + '/tom3.wav'
+    ];
+
+    for (var i = 0; i < urls.length; i++)
+      this.loadBuffer(urls[i], i, urls.length);
+
+  },
+
+  loadBuffer: function(url, index, total) {
+
+    var that = this;
+    var request = new XMLHttpRequest();
+    request.open('GET', url, true);
+    request.responseType = 'arraybuffer';
+
+    request.onload = function() {
+      that.context.decodeAudioData(
+        request.response,
+        function(buffer) {
+          that.buffers[index] = buffer;
+          if (that.buffers.length == total)
+            that.isReady = true;
+        },
+        function(error) {
+          console.error("Error decoding audio data: ", error);
+        }
+      );
+    }
+
+    request.send();
 
   },
 

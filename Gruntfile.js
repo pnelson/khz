@@ -51,6 +51,12 @@ module.exports = function(grunt) {
         src: 'src/index.html',
         dest: 'build/index.html'
       },
+      sounds: {
+        expand: true,
+        cwd: 'src/static/sounds/',
+        src: '**',
+        dest: 'build/static/sounds/'
+      },
       normalize: {
         src: 'bower_components/normalize-css/normalize.css',
         dest: 'bower_components/normalize-css/normalize.scss'
@@ -128,6 +134,7 @@ module.exports = function(grunt) {
     grunt.task.run([
       'clean:build',
       'copy:index',
+      'copy:sounds',
       'copy:normalize',
       'copy:font_awesome',
       'emberTemplates',
