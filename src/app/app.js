@@ -13,8 +13,7 @@ App.Router.map(function() {
 
 App.IndexRoute = Ember.Route.extend({
   beforeModel: function() {
-    // TODO: was transitionTo but i think that is why some websites suck with back button
-    this.replaceWith('loop', '00AGQAAAAgACAAIAAgABABAQAQABAQAQEBEAERECIBIgEiASIBACAAIAAgACAAEAEBABAAEBABAQEQAREQIgEiASIBIgE=');
+    this.replaceWith('loop', '0ZEERQVShoaGhCAgICAQRBARBEUFUoaGhoQ==');
   }
 });
 
@@ -22,42 +21,58 @@ App.LoopRoute = Ember.Route.extend({
 
   model: function(params) {
     var beats = [];
-    var version = parseInt(params.loop_id.slice(0, 2), 10);
-    var encoded = params.loop_id.slice(2);
-    var decoded = base64ToHex(encoded);
-    for (var i = 8; beats.length < 8; i += 16) {
-      var notes = decoded.slice(i, i + 16).split('');
-      beats.push(notes.map(function(note) {
+    var version = params.loop_id[0];
+    var decoded = window.atob(params.loop_id.slice(1));
+    // break the data into chunks of 4
+    for (var i = 1; i < decoded.length; i += 4) {
+      var bar = [];
+      // unpack the chunk into additional chunks of 4
+      for (var j = 0; j < 4; j++) {
+        var chunk = decoded.charCodeAt(i + j);
+        var notes = this.unpack(chunk);
+        bar = bar.concat(notes);
+      }
+      // append the unpacked bar to the beats array
+      beats.push(bar.map(function(note) {
         return App.Note.create({ intensity: parseInt(note, 10) })
       }));
     }
+    // return the completed data model
     return {
       version: version,
-      kit: parseInt(decoded.slice(0, 2), 16),
-      tempo: parseInt(decoded.slice(2, 4), 16),
-      // 4-6
-      // 6-8
+      tempo: parseInt(decoded.charCodeAt(0), 10),
       beats: beats
     };
   },
 
   serialize: function(model) {
-    console.log('serialize');
-    var parts = [ this.toPaddedHex(model.kit), this.toPaddedHex(model.tempo), '0000' ];
-    var notes = model.beats.map(function(notes) {
-      return notes.map(function(note) {
-        return note.get('intensity');
-      }).join('');
+    // get an array of ternary digits representing the beat
+    var notes = [].concat.apply([], model.beats).map(function(note) {
+      return note.get('intensity');
     });
-    parts = parts.concat(notes).join('');
-    return { loop_id: this.toPaddedHex(model.version) + hexToBase64(parts) };
+    // break the array into chunks of 4
+    var groups = [];
+    for (var i = 0; i < notes.length; i += 4) {
+      var chunk = notes.slice(i, i + 4);
+      groups.push(chunk);
+    }
+    // pack 4 ternary digits into one byte
+    var chars = groups.map(function(group) {
+      return (group[0] << 6) +
+             (group[1] << 4) +
+             (group[2] << 2) +
+             parseInt(group[3], 3);
+    });
+    // prepend the tempo
+    chars.unshift(model.tempo);
+    // build a string from the character codes
+    chars = String.fromCharCode.apply(null, chars);
+    // base64ify the string
+    return { loop_id: model.version + window.btoa(chars) };
   },
 
-  toPaddedHex: function(n) {
-    var hex = n.toString(16);
-    if (hex.length === 1)
-      return '0' + hex;
-    return hex;
+  unpack: function(data) {
+    return [data >> 6, (data >> 4) & 0x3, (data >> 2) & 0x3, data & 0x3];
   }
 
 });
@@ -170,18 +185,3 @@ App.Note = Ember.Object.extend({
   }.property('intensity')
 
 });
-
-// 00 00 64 00 00
-// 00 20 00 20 00 20 00 20
-// 00 10 01 01 00 10 00 10
-// 10 01 01 01 10 01 11 10
-// 22 01 22 01 22 01 22 01
-// 00 20 00 20 00 20 00 20
-// 00 10 01 01 00 10 00 10
-// 10 01 01 01 10 01 11 10
-// 22 01 22 01 22 01 22 01
-
-// 00 00 64 00 00 00 20 00 20 00 20 00 20 00 10 01 01 00 10 00 10 10 01 01 01 10 01 11 10 22 01 22 01 22 01 22 01 00 20 00 20 00 20 00 20 00 10 01 01 00 10 00 10 10 01 01 01 10 01 11 10 22 01 22 01 22 01 22 01
-// 00AGQAAAAgACAAIAAgABABAQAQABAQAQEBEAERECIBIgEiASIBACAAIAAgACAAEAEBABAAEBABAQEQAREQIgEiASIBIgE=
-
-require('base64');
