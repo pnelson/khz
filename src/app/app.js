@@ -13,7 +13,7 @@ App.Router.map(function() {
 
 App.IndexRoute = Ember.Route.extend({
   beforeModel: function() {
-    this.replaceWith('loop', '0ZEERQVShoaGhCAgICAQRBARBEUFUoaGhoQ==');
+    this.replaceWith('loop', '0ZIAAgAAAgACAiIiIiAAAAAAAAAAAAAAAAA==');
   }
 });
 
@@ -86,6 +86,8 @@ App.LoopController = Ember.ObjectController.extend({
   isReady: false,
   isPlaying: false,
 
+  timeoutId: null,
+
   init: function() {
     this._super();
     this.context = new (window.AudioContext || window.webkitAudioContext)();
@@ -97,7 +99,7 @@ App.LoopController = Ember.ObjectController.extend({
   actions: {
 
     toggle: function() {
-      this.toggleProperty('isPlaying');
+      this.toggleProperty('isPlaying') ? this.play() : this.stop();
     },
 
     tempoDown: function() {
@@ -165,6 +167,27 @@ App.LoopController = Ember.ObjectController.extend({
     if (!source.start)
       source.start = source.noteOn;
     source.start(time);
+  },
+
+  loop: function(that) {
+    var start = that.context.currentTime;
+    var sixteenth = (60 / that.get('tempo')) / 4;
+    // queue the next loop
+    that.timeoutId = window.setTimeout(that.loop, (sixteenth * 16) * 1000, that);
+    // queue the sounds for the current loop
+    for (var beat = 0; beat < 16; beat++) {
+      var time = start + (beat * sixteenth);
+      for (var i = 0; i < that.buffers.length; i++)
+        that.playSound(that.buffers[i], that.get('beats')[i][beat].intensity, time);
+    }
+  },
+
+  play: function() {
+    this.timeoutId = window.setTimeout(this.loop, 0, this);
+  },
+
+  stop: function() {
+    window.clearTimeout(this.timeoutId);
   },
 
   updateLoopId: function() {
