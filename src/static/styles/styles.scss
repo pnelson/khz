@@ -9,6 +9,16 @@ html {
   overflow-y: scroll;
 }
 
+body {
+  font-family: "Lato", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+h1, h2, h3, h3, h4, h5, h6 {
+  font-family: "Rokkitt", "Georgia", "Times New Roman", "Times", serif;
+}
+
 ul {
   list-style-type: none;
   padding-left: 0;
@@ -20,6 +30,37 @@ ul {
   padding: 0 24px;
 }
 
+.header {
+  background-color: $color-primary;
+  color: $color-white;
+  padding: 24px 0;
+}
+
+.header h1 {
+  font-size: 100px;
+  line-height: 1;
+  margin: 0;
+  text-shadow: 4px 3px 0 darken($color-primary, 20%), 7px 6px 0 rgba(0,0,0,0.15);
+}
+
+.header p {
+  font-size: 32px;
+  font-weight: 300;
+  line-height: 1;
+  margin: -10px 0 0;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.15);
+  text-transform: uppercase;
+}
+
+.content {
+  background-color: $color-white;
+}
+
+.about {
+  font-size: 26px;
+  line-height: 36px;
+}
+
 .beat button {
   background-color: $color-white;
   border: none;
@@ -29,3 +70,15 @@ ul {
 //.beat li + li:before {
 //  content: " ";
 //}
+
+.footer {
+  color: $color-base02;
+}
+
+.footer a {
+  color: $color-secondary;
+}
+
+.footer a:hover {
+  color: darken($color-secondary, 20%);
+}
