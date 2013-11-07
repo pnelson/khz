@@ -81,6 +81,7 @@ App.LoopController = Ember.ObjectController.extend({
 
   context: null,
   buffers: [],
+  volumes: [0, 0.4, 1],
 
   isReady: false,
   isPlaying: false,
@@ -88,6 +89,8 @@ App.LoopController = Ember.ObjectController.extend({
   init: function() {
     this._super();
     this.context = new (window.AudioContext || window.webkitAudioContext)();
+    if (!this.context.createGain)
+      this.context.createGain = this.context.createGainNode;
     this.loadKit('00');
   },
 
@@ -150,6 +153,18 @@ App.LoopController = Ember.ObjectController.extend({
 
     request.send();
 
+  },
+
+  playSound: function(buffer, intensity, time) {
+    var source = this.context.createBufferSource();
+    var volume = this.context.createGain();
+    source.buffer = buffer;
+    source.connect(volume);
+    volume.connect(this.context.destination);
+    volume.gain.value = this.volumes[intensity];
+    if (!source.start)
+      source.start = source.noteOn;
+    source.start(time);
   },
 
   updateLoopId: function() {
