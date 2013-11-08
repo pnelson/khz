@@ -5,11 +5,18 @@
 @import "normalize-css/normalize";
 @import "font-awesome/scss/font-awesome";
 
+@mixin highlighter {
+  background: darken($color-primary, 40%);
+  color: $color-white;
+  text-shadow: none;
+}
+
 html {
   overflow-y: scroll;
 }
 
 body {
+  color: $color-black;
   font-family: "Lato", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   font-size: 18px;
   line-height: 24px;
@@ -32,15 +39,22 @@ ul {
 
 .header {
   background-color: $color-primary;
+  border-bottom: 1px solid darken($color-primary, 20%);
   color: $color-white;
   padding: 24px 0;
 }
 
-.header h1 {
+.header h1,
+.header i {
   font-size: 100px;
   line-height: 1;
   margin: 0;
   text-shadow: 4px 3px 0 darken($color-primary, 20%), 7px 6px 0 rgba(0,0,0,0.15);
+}
+
+.header i {
+  float: right;
+  font-size: 122px;
 }
 
 .header p {
@@ -48,7 +62,7 @@ ul {
   font-weight: 300;
   line-height: 1;
   margin: -10px 0 0;
-  text-shadow: 0 1px 0 rgba(0,0,0,0.15);
+  text-shadow: 1px 2px 0 rgba(0,0,0,0.15);
   text-transform: uppercase;
 }
 
@@ -64,6 +78,8 @@ ul {
 .beat button {
   background-color: $color-white;
   border: none;
+  color: $color-base01;
+  outline: none;
   padding: 1px 2px;
 }
 
@@ -77,8 +93,12 @@ ul {
 
 .footer a {
   color: $color-secondary;
+  text-decoration: none;
 }
 
 .footer a:hover {
   color: darken($color-secondary, 20%);
 }
+
+::selection { @include highlighter; }
+::-moz-selection { @include highlighter; }
