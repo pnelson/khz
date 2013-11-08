@@ -5,6 +5,12 @@
 @import "normalize-css/normalize";
 @import "font-awesome/scss/font-awesome";
 
+@mixin clearfix() {
+  *zoom:1;
+  &:before, &:after { content: " "; display: table; }
+  &:after { clear: both; }
+}
+
 @mixin highlighter {
   background: darken($color-primary, 40%);
   color: $color-white;
@@ -74,6 +80,29 @@ ul {
 .about {
   font-size: 26px;
   line-height: 36px;
+}
+
+.builder {
+  @include clearfix();
+}
+
+.builder ul {
+  margin: 0;
+}
+
+.pieces {
+  float: left;
+}
+
+.pieces li {
+  font-weight: bold;
+  line-height: 2;
+  margin-top: 2px;
+  text-align: right;
+}
+
+.beats {
+  float: right;
 }
 
 .beat button {

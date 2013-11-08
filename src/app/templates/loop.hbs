@@ -4,19 +4,32 @@
   Share your beat by copying the page link.
 </p>
 
-<ul>
-  {{#each beats}}
-    <li>
-      <div class="beat">
-        {{#each this itemController="note"}}
-          <button {{action 'click' on='click'}}>
-            <i {{bind-attr class='icon'}}></i>
-          </button>
-        {{/each}}
-      </div>
-    </li>
-  {{/each}}
-</ul>
+<div class="builder">
+
+  <ul class="pieces">
+    <li>Kick</li>
+    <li>Snare</li>
+    <li>Hi-Hat</li>
+    <li>Tom High</li>
+    <li>Tom Med</li>
+    <li>Tom Low</li>
+  </ul>
+
+  <ul class="beats">
+    {{#each beats}}
+      <li>
+        <div class="beat">
+          {{#each this itemController="note"}}
+            <button {{action 'click' on='click'}}>
+              <i {{bind-attr class='icon'}}></i>
+            </button>
+          {{/each}}
+        </div>
+      </li>
+    {{/each}}
+  </ul>
+
+</div>
 
 <ul class="controls">
 
