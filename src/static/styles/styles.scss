@@ -28,6 +28,7 @@ h1, h2, h3, h3, h4, h5, h6 {
 
 ul {
   list-style-type: none;
+  margin: 40px 0;
   padding-left: 0;
 }
 
@@ -86,6 +87,43 @@ ul {
 //.beat li + li:before {
 //  content: " ";
 //}
+
+.controls li {
+  display: inline;
+}
+
+.controls li + li {
+  margin-left: -3px;
+}
+
+.controls li.spacer {
+  margin-left: 20px;
+}
+
+.controls button,
+.controls span {
+  background-color: darken($color-primary, 10%);
+  border: 1px solid darken($color-primary, 40%);
+  color: $color-white;
+  padding: 8px 12px;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.15);
+}
+
+.controls button {
+  background-image: linear-gradient($color-primary, darken($color-primary, 10%));
+  box-shadow: inset 0px 0px 2px $color-white;
+}
+
+.controls button:hover {
+  background-color: $color-primary;
+  background-image: linear-gradient(darken($color-primary, 10%), $color-primary);
+}
+
+.controls button:focus {
+  border-color: darken($color-primary, 50%);
+  box-shadow: inset 0px 0px 3px $color-base03;
+  outline: none;
+}
 
 .footer {
   color: $color-base02;
