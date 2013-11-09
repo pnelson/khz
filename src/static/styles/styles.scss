@@ -118,6 +118,18 @@ ul {
 //  content: " ";
 //}
 
+.counter {
+  float: right;
+}
+
+.counter li {
+  color: $color-base05;
+  display: inline;
+  font-family: monospace;
+  font-size: 12px;
+  margin: 14px;
+}
+
 .controls li {
   display: inline;
 }
