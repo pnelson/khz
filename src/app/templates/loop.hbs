@@ -65,7 +65,7 @@
   <li class="spacer"></li>
 
   <li>
-    <span>{{tempo}} bpm</span>
+    <span class="value">{{tempo}} bpm</span>
   </li>
 
   <li>
@@ -77,6 +77,26 @@
   <li>
     <button {{action 'tempoUp'}}>
       <i class="fa fa-chevron-up"></i>
+    </button>
+  </li>
+
+  <li class="spacer"></li>
+
+  <li>
+    <button {{action 'preset' 0}} title="Reset">
+      <i class="fa fa-refresh"></i>
+    </button>
+  </li>
+
+  <li>
+    <button {{action 'preset' 1}} title="Preset #1">
+      <span class="preset">1</span>
+    </button>
+  </li>
+
+  <li>
+    <button {{action 'preset' 2}} title="Preset #2">
+      <span class="preset">2</span>
     </button>
   </li>
 

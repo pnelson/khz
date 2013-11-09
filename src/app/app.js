@@ -115,7 +115,20 @@ App.LoopController = Ember.ObjectController.extend({
       var tempo = this.get('tempo');
       this.set('tempo', Math.min(200, tempo + 5));
       this.updateLoopId();
-    }
+    },
+
+    preset: function(presetId) {
+      switch (presetId) {
+      case 1:
+        this.get('target').replaceWith('loop', '0ZIiIiIgAAAAAAAAAAAAAAAAAgACAgACAAA==');
+        break;
+      case 2:
+        this.get('target').replaceWith('loop', '0ZIiYiYiCCCCQAAAABAAAAAIAAAAAgICAgA==');
+        break;
+      default:
+        this.get('target').replaceWith('loop', '0ZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==');
+      }
+    },
 
   },
 
