@@ -102,11 +102,21 @@ module.exports = function(grunt) {
     },
 
     concat: {
-      app: {
+      build: {
         src: [
           'bower_components/jquery/jquery.js',
           'bower_components/handlebars/handlebars.runtime.js',
           'bower_components/ember/ember.js',
+          'tmp/app.js',
+          'tmp/templates.js'
+        ],
+        dest: 'build/static/app.js'
+      },
+      release: {
+        src: [
+          'bower_components/jquery/jquery.js',
+          'bower_components/handlebars/handlebars.runtime.js',
+          'bower_components/ember/ember.prod.js',
           'tmp/app.js',
           'tmp/templates.js'
         ],
@@ -159,12 +169,14 @@ module.exports = function(grunt) {
       'copy:font_awesome',
       'emberTemplates',
       'sass:build',
-      'neuter:app',
-      'concat:app'
+      'neuter:app'
     ]);
     if (target === 'release') {
+      grunt.task.run('concat:release');
       grunt.task.run('cssmin:app');
       grunt.task.run('uglify:app');
+    } else {
+      grunt.task.run('concat:build');
     }
   });
 
