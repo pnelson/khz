@@ -34,7 +34,10 @@ App.LoopRoute = Ember.Route.extend({
       }
       // append the unpacked bar to the beats array
       beats.push(bar.map(function(note) {
-        return App.Note.create({ intensity: parseInt(note, 10) })
+        return App.Note.create({
+          buffer: (i - 1) / 4,
+          intensity: parseInt(note, 10)
+        });
       }));
     }
     // return the completed data model
@@ -160,12 +163,13 @@ App.LoopController = Ember.ObjectController.extend({
   playSound: function(buffer, intensity, time) {
     var source = this.context.createBufferSource();
     var volume = this.context.createGain();
-    source.buffer = buffer;
+    source.buffer = this.buffers[buffer];
     source.connect(volume);
     volume.connect(this.context.destination);
     volume.gain.value = this.volumes[intensity];
     if (!source.start)
       source.start = source.noteOn;
+    time = typeof time !== 'undefined' ? time : this.context.currentTime;
     source.start(time);
   },
 
@@ -178,7 +182,7 @@ App.LoopController = Ember.ObjectController.extend({
     for (var beat = 0; beat < 16; beat++) {
       var time = start + (beat * sixteenth);
       for (var i = 0; i < that.buffers.length; i++)
-        that.playSound(that.buffers[i], that.get('beats')[i][beat].intensity, time);
+        that.playSound(i, that.get('beats')[i][beat].intensity, time);
     }
   },
 
@@ -199,12 +203,14 @@ App.LoopController = Ember.ObjectController.extend({
 App.NoteController = Ember.ObjectController.extend({
 
   needs: ['loop'],
+  loop: Ember.computed.alias('controllers.loop'),
 
   actions: {
     click: function() {
       var current = this.get('intensity');
       this.set('intensity', (current + 1) % 3);
-      this.get('controllers.loop').updateLoopId();
+      this.get('loop').updateLoopId();
+      this.get('loop').playSound(this.get('buffer'), this.get('intensity'));
     }
   }
 
@@ -212,6 +218,7 @@ App.NoteController = Ember.ObjectController.extend({
 
 App.Note = Ember.Object.extend({
 
+  buffer: null,
   intensity: 0,
 
   icon: function() {
