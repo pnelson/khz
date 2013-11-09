@@ -107,11 +107,29 @@ module.exports = function(grunt) {
           'bower_components/jquery/jquery.js',
           'bower_components/handlebars/handlebars.runtime.js',
           'bower_components/ember/ember.js',
-          //'bower_components/ember-data-shim/ember-data.js',
           'tmp/app.js',
           'tmp/templates.js'
         ],
         dest: 'build/static/app.js'
+      }
+    },
+
+    cssmin: {
+      app: {
+        files: {
+          'build/static/styles.css': 'build/static/styles.css'
+        },
+        options: {
+          keepSpecialComments: 0
+        }
+      }
+    },
+
+    uglify: {
+      app: {
+        files: {
+          'build/static/app.js': 'build/static/app.js'
+        }
       }
     }
 
@@ -122,6 +140,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-ember-templates');
   grunt.loadNpmTasks('grunt-neuter');
@@ -142,9 +162,10 @@ module.exports = function(grunt) {
       'neuter:app',
       'concat:app'
     ]);
-    //if (target === 'release') {
-    //  grunt.task.run('');
-    //}
+    if (target === 'release') {
+      grunt.task.run('cssmin:app');
+      grunt.task.run('uglify:app');
+    }
   });
 
   grunt.registerTask('release', [
