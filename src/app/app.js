@@ -13,7 +13,7 @@ App.Router.map(function() {
 
 App.IndexRoute = Ember.Route.extend({
   beforeModel: function() {
-    this.replaceWith('loop', '0ZIAAgAAAgACAiIiIiAAAAAAAAAAAAAAAAA==');
+    this.replaceWith('loop', '0ZIiIiIgAAAAAAAAAAAAAAAAAgACAgACAAA==');
   }
 });
 
@@ -119,12 +119,12 @@ App.LoopController = Ember.ObjectController.extend({
   loadKit: function(kitId) {
 
     var urls = [
-      '/static/sounds/' + kitId + '/kick.wav',
-      '/static/sounds/' + kitId + '/snare.wav',
       '/static/sounds/' + kitId + '/hihat.wav',
       '/static/sounds/' + kitId + '/tom1.wav',
       '/static/sounds/' + kitId + '/tom2.wav',
-      '/static/sounds/' + kitId + '/tom3.wav'
+      '/static/sounds/' + kitId + '/tom3.wav',
+      '/static/sounds/' + kitId + '/snare.wav',
+      '/static/sounds/' + kitId + '/kick.wav'
     ];
 
     for (var i = 0; i < urls.length; i++)
