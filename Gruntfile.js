@@ -15,9 +15,9 @@ module.exports = function(grunt) {
     },
 
     watch: {
-      index: {
-        files: 'src/index.html',
-        tasks: ['gitinfo', 'copy:index', 'replace:app']
+      root: {
+        files: 'src/*',
+        tasks: ['gitinfo', 'copy:root', 'replace:app']
       },
       app: {
         files: 'src/app/*.js',
@@ -47,9 +47,12 @@ module.exports = function(grunt) {
     },
 
     copy: {
-      index: {
-        src: 'src/index.html',
-        dest: 'build/index.html'
+      root: {
+        cwd: 'src/',
+        src: '*',
+        dest: 'build/',
+        expand: true,
+        filter: 'isFile'
       },
       sounds: {
         expand: true,
@@ -200,7 +203,7 @@ module.exports = function(grunt) {
     grunt.task.run([
       'gitinfo',
       'clean:build',
-      'copy:index',
+      'copy:root',
       'replace:app',
       'copy:sounds',
       'copy:normalize',
