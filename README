@@ -1,9 +1,9 @@
 kHz
 ===
 
-Aspiring to be an easy-to-share drum loop application written in Ember. This is
-still a work in progress as I get time. I'm using it to learn Ember and the
-Grunt toolchain.
+A hypershareable drum loop application written in Ember. This started as a means
+of learning Ember and the Grunt toolchain. I also ended up learning a bit about
+the HTML5 web audio API (sorry Internet Explorer users).
 
 This is my first Ember application and I don't do much client-side development.
 If anybody happens to stumble across this, please point out all my mistakes
