@@ -1,9 +1,5 @@
 App = Ember.Application.create();
 
-App.Router.reopen({
-  location: 'history'
-});
-
 App.Router.map(function() {
   this.resource('loop', { path: ':loop_id' });
 });
