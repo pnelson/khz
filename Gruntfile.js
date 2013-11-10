@@ -166,6 +166,13 @@ module.exports = function(grunt) {
         src: 'tmp/styles.css',
         dest: 'build/static/styles-<%= gitinfo.local.branch.current.SHA %>.css'
       }
+    },
+
+    'gh-pages': {
+      options: {
+        base: 'build'
+      },
+      src: ['**']
     }
 
   });
@@ -179,6 +186,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-ember-templates');
+  grunt.loadNpmTasks('grunt-gh-pages');
   grunt.loadNpmTasks('grunt-gitinfo');
   grunt.loadNpmTasks('grunt-neuter');
   grunt.loadNpmTasks('grunt-rename');

@@ -12,6 +12,7 @@
     "grunt-contrib-uglify": "~0.2.6",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-ember-templates": "~0.4.15",
+    "grunt-gh-pages": "~0.8.1",
     "grunt-gitinfo": "~0.1.1",
     "grunt-neuter": "~0.6.0",
     "grunt-rename": "~0.1.3",
