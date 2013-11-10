@@ -222,9 +222,10 @@ module.exports = function(grunt) {
     grunt.task.run('rename');
   });
 
-  grunt.registerTask('release', [
+  grunt.registerTask('publish', [
     'build:release',
-    'test'
+    'test',
+    'gh-pages'
   ]);
 
   grunt.registerTask('server', function(target) {
