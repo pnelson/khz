@@ -213,9 +213,11 @@ module.exports = function(grunt) {
       'neuter:app'
     ]);
     if (target === 'release') {
-      grunt.task.run('concat:release');
-      grunt.task.run('cssmin:app');
-      grunt.task.run('uglify:app');
+      grunt.task.run([
+        'concat:release',
+        'cssmin:app',
+        'uglify:app'
+      ]);
     } else {
       grunt.task.run('concat:build');
     }
