@@ -17,7 +17,7 @@ module.exports = function(grunt) {
     watch: {
       index: {
         files: 'src/index.html',
-        tasks: 'copy:index'
+        tasks: ['gitinfo', 'copy:index', 'replace:app']
       },
       app: {
         files: 'src/app/*.js',
@@ -72,7 +72,7 @@ module.exports = function(grunt) {
     sass: {
       build: {
         files: {
-          'build/static/styles.css': 'src/static/styles/styles.scss'
+          'tmp/styles.css': 'src/static/styles/styles.scss'
         },
         options: {
           includePaths: ['bower_components']
@@ -83,7 +83,7 @@ module.exports = function(grunt) {
     neuter: {
       app: {
         src: 'src/app/app.js',
-        dest: 'tmp/app.js'
+        dest: 'tmp/app.neutered.js'
       },
       options: {
         basePath: 'src/app/'
@@ -107,27 +107,27 @@ module.exports = function(grunt) {
           'bower_components/jquery/jquery.js',
           'bower_components/handlebars/handlebars.runtime.js',
           'bower_components/ember/ember.js',
-          'tmp/app.js',
+          'tmp/app.neutered.js',
           'tmp/templates.js'
         ],
-        dest: 'build/static/app.js'
+        dest: 'tmp/app.js'
       },
       release: {
         src: [
           'bower_components/jquery/jquery.js',
           'bower_components/handlebars/handlebars.runtime.js',
           'bower_components/ember/ember.prod.js',
-          'tmp/app.js',
+          'tmp/app.neutered.js',
           'tmp/templates.js'
         ],
-        dest: 'build/static/app.js'
+        dest: 'tmp/app.js'
       }
     },
 
     cssmin: {
       app: {
         files: {
-          'build/static/styles.css': 'build/static/styles.css'
+          'tmp/styles.css': 'tmp/styles.css'
         },
         options: {
           keepSpecialComments: 0
@@ -138,8 +138,33 @@ module.exports = function(grunt) {
     uglify: {
       app: {
         files: {
-          'build/static/app.js': 'build/static/app.js'
+          'tmp/app.js': 'tmp/app.js'
         }
+      }
+    },
+
+    replace: {
+      app: {
+        options: {
+          patterns: [{
+            match: 'git',
+            replacement: '<%= gitinfo.local.branch.current.SHA %>'
+          }]
+        },
+        files: {
+          'build/index.html': 'build/index.html'
+        }
+      }
+    },
+
+    rename: {
+      scripts: {
+        src: 'tmp/app.js',
+        dest: 'build/static/app-<%= gitinfo.local.branch.current.SHA %>.js'
+      },
+      styles: {
+        src: 'tmp/styles.css',
+        dest: 'build/static/styles-<%= gitinfo.local.branch.current.SHA %>.css'
       }
     }
 
@@ -154,7 +179,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-ember-templates');
+  grunt.loadNpmTasks('grunt-gitinfo');
   grunt.loadNpmTasks('grunt-neuter');
+  grunt.loadNpmTasks('grunt-rename');
+  grunt.loadNpmTasks('grunt-replace');
 
   grunt.registerTask('test', [
     //'jshint'
@@ -162,8 +190,10 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', function(target) {
     grunt.task.run([
+      'gitinfo',
       'clean:build',
       'copy:index',
+      'replace:app',
       'copy:sounds',
       'copy:normalize',
       'copy:font_awesome',
@@ -178,6 +208,7 @@ module.exports = function(grunt) {
     } else {
       grunt.task.run('concat:build');
     }
+    grunt.task.run('rename');
   });
 
   grunt.registerTask('release', [
