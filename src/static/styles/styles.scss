@@ -38,6 +38,15 @@ ul {
   padding-left: 0;
 }
 
+a {
+  color: $color-secondary;
+  text-decoration: none;
+}
+
+a:hover {
+  color: darken($color-secondary, 20%);
+}
+
 .container {
   margin: 24px auto;
   max-width: 740px;
@@ -75,9 +84,10 @@ ul {
 
 .content {
   background-color: $color-white;
+  margin-top: 46px;
 }
 
-.about {
+.description {
   font-size: 26px;
   line-height: 36px;
   text-align: justify;
@@ -179,15 +189,6 @@ ul {
 
 .footer {
   color: $color-base02;
-}
-
-.footer a {
-  color: $color-secondary;
-  text-decoration: none;
-}
-
-.footer a:hover {
-  color: darken($color-secondary, 20%);
 }
 
 ::selection { @include highlighter; }
