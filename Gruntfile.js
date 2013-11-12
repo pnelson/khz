@@ -155,6 +155,7 @@ module.exports = function(grunt) {
           }]
         },
         files: {
+          'build/404.html': 'build/404.html',
           'build/index.html': 'build/index.html'
         }
       }
