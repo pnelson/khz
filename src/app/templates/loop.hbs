@@ -24,6 +24,9 @@
               <i {{bind-attr class='icon'}}></i>
             </button>
           {{/each}}
+          <button {{action 'clear' this on='click'}} class="clear" title="Clear">
+            <i class="fa fa-trash-o fa-lg"></i>
+          </button>
         </div>
       </li>
     {{/each}}

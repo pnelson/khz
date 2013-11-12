@@ -94,6 +94,12 @@ App.LoopController = Ember.ObjectController.extend({
 
   actions: {
 
+    clear: function(notes) {
+      for (var i = 0; i < notes.length; i++)
+        notes[i].set('intensity', 0);
+      this.updateLoopId();
+    },
+
     toggle: function() {
       this.toggleProperty('isPlaying') ? this.play() : this.stop();
     },
