@@ -1,0 +1,9 @@
+/* TEAM */
+  Philip Nelson
+  Site: http://pnelson.ca/about/
+  Location: Vancouver, BC
+
+/* SITE */
+  Standards: HTML5, CSS3
+  Components: Normalize, Ember, jQuery, Font Awesome
+  Software: Sublime Text, Git, Grunt
