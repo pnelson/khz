@@ -84,6 +84,12 @@ App.LoopController = Ember.ObjectController.extend({
 
   timeoutId: null,
 
+  tweetUrl: function() {
+    var text = encodeURIComponent("I just made an awesome beat on khz.io!");
+    var url = encodeURIComponent(window.location.origin + "/" + window.location.hash);
+    return "https://twitter.com/intent/tweet?text=" + text + "&url=" + url;
+  }.property(),
+
   init: function() {
     this._super();
     this.context = new (window.AudioContext || window.webkitAudioContext)();
