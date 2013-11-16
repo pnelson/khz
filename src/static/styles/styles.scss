@@ -87,10 +87,15 @@ a:hover {
   margin-top: 46px;
 }
 
-.description {
+.description,
+.unsupported {
   font-size: 26px;
   line-height: 36px;
   text-align: justify;
+}
+
+.unsupported {
+  display: none;
 }
 
 .builder {
@@ -103,6 +108,10 @@ a:hover {
 
 .pieces {
   float: left;
+}
+
+.pieces.acronyms {
+  display: none;
 }
 
 .pieces li {
@@ -194,3 +203,88 @@ a:hover {
 
 ::selection { @include highlighter; }
 ::-moz-selection { @include highlighter; }
+
+@media screen and (max-width: $screen-size-medium) {
+
+  .header {
+    padding: 12px 0;
+  }
+
+  .header .container {
+    margin: 0;
+  }
+
+  .header h1 {
+    font-size: 80px;
+  }
+
+  .header i {
+    font-size: 102px;
+  }
+
+  .pieces {
+    display: none;
+  }
+
+  .pieces.acronyms {
+    display: list-item;
+    margin-right: 12px;
+  }
+
+  .beats {
+    float: none;
+  }
+
+  .beat .clear {
+    margin-left: 4px;
+  }
+
+  .counter {
+    float: none;
+    padding-left: 40px;
+    padding-right: 0;
+  }
+
+}
+
+@media screen and (max-width: $screen-size-small) {
+
+  .header p {
+    font-size: 22px;
+  }
+
+  .pieces.acronyms {
+    display: none;
+  }
+
+  .beat button {
+    padding: 1px 0;
+  }
+
+  .beat .clear {
+    display: none;
+  }
+
+  .counter {
+    padding-left: 0;
+  }
+
+  .counter li {
+    margin: 12px;
+  }
+
+}
+
+@media screen and (max-width: $screen-size-unsupported) {
+
+  .description,
+  .builder,
+  .controls {
+    display: none;
+  }
+
+  .unsupported {
+    display: block;
+  }
+
+}
