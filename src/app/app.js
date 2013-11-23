@@ -210,6 +210,7 @@ App.LoopController = Ember.ObjectController.extend({
 
   stop: function() {
     window.clearTimeout(this.timeoutId);
+    delete this.timeoutId;
   },
 
   updateLoopId: function() {
@@ -226,9 +227,11 @@ App.NoteController = Ember.ObjectController.extend({
   actions: {
     click: function() {
       var current = this.get('intensity');
+      var playing = this.get('loop').get('timeoutId');
       this.set('intensity', (current + 1) % 3);
       this.get('loop').updateLoopId();
-      this.get('loop').playSound(this.get('buffer'), this.get('intensity'));
+      if (playing === null)
+        this.get('loop').playSound(this.get('buffer'), this.get('intensity'));
     }
   }
 
